@@ -21,6 +21,8 @@ class _MyAppState extends State<MyApp> {
   var colorsListBg = [Colors.black12, Color(0xC7D3D4FF), Color(0x9CC3D5FF)];
   var player = AssetsAudioPlayer();
   var isPlaying = false;
+  var isFirstTime = true;
+  var buttonImage = Icons.play_circle_fill;
 
   @override
   Widget build(BuildContext context) {
@@ -60,16 +62,24 @@ class _MyAppState extends State<MyApp> {
                   IconButton(
                     onPressed: () {
                       setState(() {
+                        if (isFirstTime) {
+                          player.open(Audio('assets/ost1.mp3'),
+                              autoStart: true);
+                          isFirstTime = false;
+                        }
                         isPlaying = !isPlaying;
-                        if (isPlaying)
+                        if (isPlaying) {
                           player.play();
-                        else
+                          buttonImage = Icons.pause_circle_filled;
+                        } else {
                           player.pause();
+                          buttonImage = Icons.play_circle_filled;
+                        }
                       });
                     },
                     padding: EdgeInsets.zero,
                     icon: Icon(
-                      Icons.play_circle_fill,
+                      buttonImage,
                       size: 48,
                       color: colorsList[imageNumber - 1],
                     ),
